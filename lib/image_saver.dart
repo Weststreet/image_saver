@@ -29,4 +29,8 @@ class ImageSaver {
     }
     return File(filePath);
   }
+
+  static Future pleaseIOS() async {
+    await _channel.invokeMethod('pleaseIOS');
+  }
 }

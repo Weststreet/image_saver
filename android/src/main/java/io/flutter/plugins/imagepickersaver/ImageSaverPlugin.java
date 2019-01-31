@@ -54,16 +54,14 @@ public class ImageSaverPlugin implements MethodChannel.MethodCallHandler {
             return;
         }
         if (call.method.equals("saveFile")) {
-
-
             try {
                 delegate.saveImageToGallery(call, result);
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new IllegalArgumentException(e);
             }
-
-
+        } else if (call.method.equals("pleaseIOS")) {
+            result.success(null);
         } else {
             throw new IllegalArgumentException("Unknown method " + call.method);
         }
