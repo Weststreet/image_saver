@@ -79,8 +79,8 @@ static const int SOURCE_GALLERY = 1;
         //_result(fileName);
     }
     else if ([@"pleaseIOS" isEqualToString:call.method]) {
-            PHFetchResult *fetchResult = [PHAsset fetchAssetsWithOptions:nil];
-            result(nil)
+            [PHAsset fetchAssetsWithOptions:nil];
+            result(nil);
     }
     else {
         result(FlutterMethodNotImplemented);
