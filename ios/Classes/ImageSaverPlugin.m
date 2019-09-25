@@ -97,16 +97,17 @@ static const int SOURCE_GALLERY = 1;
     } completionHandler:^(BOOL success, NSError *error) {
         
         if (success) {
-            NSLog(@"save image successful ");
-            PHFetchResult* assetResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[localId] options:nil];
-            PHAsset *asset = [assetResult firstObject];
-            [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
-                NSLog(@"Success %@ %@",dataUTI,info);
-                
-                NSLog(@"Success PHImageFileURLKey %@  ", (NSString *)[info objectForKey:@"PHImageFileURLKey"]);
-                fileName=((NSURL *)[info objectForKey:@"PHImageFileURLKey"]).absoluteString;
-                _result(fileName);
-            }];
+             NSLog(@"save image successful ");
+                        PHFetchResult* assetResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[localId] options:nil];
+                        PHAsset *asset = [assetResult firstObject];
+                        PHContentEditingInputRequestOptions *options = [[PHContentEditingInputRequestOptions alloc] init];
+                        options.networkAccessAllowed = YES; //download asset metadata from iCloud if needed
+
+                        [asset requestContentEditingInputWithOptions:options completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
+                            fileName=contentEditingInput.fullSizeImageURL.absoluteString;
+                            _result(fileName);
+                            NSLog(@"url=%@", fileName);
+                        }];
             
         } else {
             NSLog(@"save image failed!%@",error);
